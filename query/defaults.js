@@ -8,6 +8,7 @@ module.exports = extend( false, peliasQuery.defaults, {
   'track_scores': true,
 
   'centroid:field': 'center_point',
+  'category:field': 'category',
 
   'sort:distance:order': 'asc',
   'sort:distance:distance_type': 'plane',

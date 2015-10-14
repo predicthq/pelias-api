@@ -37,6 +37,7 @@ query.score( peliasQuery.view.admin('neighborhood') );
 // non-scoring hard filters
 query.filter( peliasQuery.view.boundary_circle );
 query.filter( peliasQuery.view.boundary_rect );
+query.filter( peliasQuery.view.category );
 
 // --------------------------------
 
@@ -111,6 +112,13 @@ function generateQuery( clean ){
   if( check.string(clean['boundary.country']) ){
     vs.set({
       'boundary:country': clean['boundary.country']
+    });
+  }
+
+  // category
+  if( check.array(clean['categories']) && !check.emptyArray(clean['categories']) ){
+    vs.set({
+      'category:categories': clean['categories']
     });
   }
 
