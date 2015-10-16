@@ -36,10 +36,15 @@ function lookupSource(src) {
 function lookupLayer(src) {
   if (src._type === 'geoname') {
     if (_.contains(src.category, 'admin')) {
-      if (_.contains(src.category, 'admin:city')) { return 'locality'; }
-      if (_.contains(src.category, 'admin:admin1')) { return 'region'; }
-      if (_.contains(src.category, 'admin:admin2')) { return 'county'; }
-      return 'neighbourhood'; // this could also be 'local_admin'
+      if (_.contains(src.category, 'planet')) { return 'planet'; }
+      if (_.contains(src.category, 'continent')) { return 'continent'; }
+      if (_.contains(src.category, 'country')) { return 'country'; }
+      if (_.contains(src.category, 'region')) { return 'region'; }
+      if (_.contains(src.category, 'county')) { return 'county'; }
+      if (_.contains(src.category, 'localadmin')) { return 'localadmin'; }
+      if (_.contains(src.category, 'locality')) { return 'locality'; }
+      if (_.contains(src.category, 'neighbourhood')) { return 'neighbourhood'; }
+      return 'venue'; // this could also be 'local_admin'
     }
 
     if (src.name) { return 'venue'; }
@@ -162,7 +167,11 @@ function copyProperties( source, props, dst ) {
  * @param {object} src
  */
 function makeGid(src) {
-  return lookupSource(src) + ':' + lookupLayer(src) + ':' + src._id;
+  if (src._type === 'geoname') {
+    return lookupSource(src) + ':venue:' + src._id;
+  } else {
+    return lookupSource(src) + ':' + lookupLayer(src) + ':' + src._id;
+  }
 }
 
 /**
