@@ -15,6 +15,7 @@ query.sort( peliasQuery.view.sort_distance );
 
 // non-scoring hard filters
 query.filter( peliasQuery.view.boundary_circle );
+query.filter( peliasQuery.view.category );
 
 // --------------------------------
 
@@ -60,6 +61,13 @@ function generateQuery( clean ){
   if( check.string(clean['boundary.country']) ){
     vs.set({
       'boundary:country': clean['boundary.country']
+    });
+  }
+
+  // category
+  if( check.array(clean['categories']) && !check.emptyArray(clean['categories']) ){
+    vs.set({
+      'category:categories': clean['categories']
     });
   }
 

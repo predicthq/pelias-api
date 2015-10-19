@@ -17,6 +17,9 @@ query.score( peliasQuery.view.focus( peliasQuery.view.ngrams ) );
 query.score( peliasQuery.view.popularity( peliasQuery.view.phrase ) );
 query.score( peliasQuery.view.population( peliasQuery.view.phrase ) );
 
+// non-scoring hard filters
+query.filter( peliasQuery.view.category );
+
 // --------------------------------
 
 /**
@@ -39,6 +42,13 @@ function generateQuery( clean ){
     vs.set({
       'focus:point:lat': clean['focus.point.lat'],
       'focus:point:lon': clean['focus.point.lon']
+    });
+  }
+
+  // category
+  if( check.array(clean['categories']) && !check.emptyArray(clean['categories']) ){
+    vs.set({
+      'category:categories': clean['categories']
     });
   }
 
