@@ -1,19 +1,17 @@
 {
   "esclient": {
+    "apiVersion": "1.3",
+    "keepAlive": true,
+    "requestTimeout": "120000",
+    "maxRetries": "3",
+    "deadTimeout": "3000",
+    "maxSockets": "20",
     "hosts": [
       {
-        "env": "production",
         "protocol": "http",
-        "host": "pelias-data-container",
+        "host": "elasticsearch",
         "port": 9200
-      },
-      {
-        "env": "production",
-        "protocol": "http",
-        "host": "pelias-data-container",
-        "port": 9300
       }
     ]
   }
 }
-

@@ -1,7 +1,20 @@
-# FROM node:4.6.0
-FROM node:0.10
+FROM ubuntu:14.04
 MAINTAINER PredictHQ
 
+RUN apt-get update \
+    && apt-get install -y software-properties-common \
+    && apt-add-repository ppa:chris-lea/node.js \
+    && apt-get update \
+    && apt-get install -y \
+        nodejs \
+        git \
+        python \
+        build-essential \
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV PORT=3100
 EXPOSE 3100
 LABEL io.openshift.expose-services 3100:http
 
@@ -14,16 +27,10 @@ ENV HOME=/opt/pelias
 WORKDIR ${WORK}
 ADD . ${WORK}
 
-# Build and set permissions for arbitrary non-root user
-RUN npm install && \
-#   npm test && \
-  chmod -R a+rwX .
-
 ADD pelias.json.docker pelias.json
 
-# Don't run as root, because there's no reason to (https://docs.docker.com/engine/articles/dockerfile_best-practices/#user).
-# This also reveals permission problems on local Docker.
-RUN chown -R 9999:9999 ${WORK}
-USER 9999
+# Install, and remove a module that causes strict mode issues.
+RUN npm install \
+  && rm -rf node_modules/pelias-schema/node_modules/pelias-config
 
 CMD npm start
